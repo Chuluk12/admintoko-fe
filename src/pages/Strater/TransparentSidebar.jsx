@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export class TransparentSidebar extends Component {
   render() {
     return (
-      <>
+      <div>
         <div class="main-content">
           <section class="section">
             <div class="section-header">
@@ -45,7 +45,7 @@ export class TransparentSidebar extends Component {
             </div>
           </section>
         </div>
-      </>
+      </div>
     );
   }
 }

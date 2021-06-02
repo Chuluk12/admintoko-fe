@@ -52,7 +52,7 @@ export class Search extends Component {
     const { searchResultData } = this.props;
 
     return (
-      <>
+      <div>
         <div className="search-element">
           <input
             className="form-control"
@@ -83,7 +83,7 @@ export class Search extends Component {
             })}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

@@ -32,6 +32,10 @@ import { useLocation } from "react-router-dom";
 // import Posts from "./pages/Pages/Features/Posts";
 
 
+// Master Page
+
+import MasterProductsPage from "./pages/Master/Products";
+
 import EcommerceDashboard from "./pages/Dashboard/EcommerceDashboard";
 import GeneralDashboard from "./pages/Dashboard/GeneralDashboard";
 import DefaultLayoutPage from "./pages/Strater/DefaultLayoutPage";
@@ -164,13 +168,12 @@ function App() {
   return (
     <div className="App">
       
-      <>
-        
+      <React.Fragment>
         {!WithoutRouter.includes(locationParent) ? (
-          <>
+          <div>
             <Header />
             <Sidebar />
-          </>
+          </div>
         ) : (
           ""
         )}
@@ -182,6 +185,10 @@ function App() {
           <Route
             path="/layout/transparent-sidebar"
             component={TransparentSidebar}
+          />
+          <Route
+            path="/products"
+            component={MasterProductsPage}
           />
           <Route path="/bootstrap/alert" component={BootstrapAlert} />
           <Route path="/bootstrap/badge" component={BootstrapBadge} />
@@ -272,9 +279,9 @@ function App() {
         </Switch>
         </React.Suspense>
         <Footer />
-      </>
+      </React.Fragment>
     </div>
   );
 }
 
-export default App;
+export default App; 

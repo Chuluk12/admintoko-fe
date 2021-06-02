@@ -15,7 +15,7 @@ export class FlagEcom extends Component {
   render() {
     const { data } = this.props;
     return (
-      <>
+      <div>
         {data.map((content, icontent) => {
           return (
             <div
@@ -57,7 +57,7 @@ export class FlagEcom extends Component {
             </div>
           );
         })}
-      </>
+      </div>
     );
   }
 }

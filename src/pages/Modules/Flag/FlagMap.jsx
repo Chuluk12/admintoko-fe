@@ -8,7 +8,9 @@ export class FlagMap extends Component {
     console.log(flags);
 
     return (
-      <>
+      // ya udah coba yg <> diganti jadi <div> ya, termasuk penutupnya </> jadi </div>
+      // oke kak 
+      <div>
         {Object.keys(flags).map((flag, iflag) => {
           let FullData = flagName.filter((data) => {
             if (data.code.toLowerCase() == flag) {
@@ -41,7 +43,7 @@ export class FlagMap extends Component {
             </div>
           );
         })}
-      </>
+      </div>
     );
   }
 }
