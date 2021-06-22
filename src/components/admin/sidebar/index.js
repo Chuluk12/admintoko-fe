@@ -240,14 +240,7 @@ export class SideBar extends Component {
               return comp;
             })}{" "}
           </ul>{" "}
-          <div className="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <a
-              href="https://getstisla.com/docs"
-              className="btn btn-primary btn-lg btn-block btn-icon-split"
-            >
-              <i className="fas fa-rocket"> </i> Documentation{" "}
-            </a>{" "}
-          </div>{" "}
+          <div className="mt-4 mb-4 p-3 hide-sidebar-mini"></div>{" "}
         </aside>{" "}
       </div>
     );

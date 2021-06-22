@@ -9,6 +9,7 @@ import { Header, Footer, Sidebar } from "./components/admin";
 // import VectorMap from "./pages/Modules/VectorMap";
 // import WeatherIcon from "./pages/Modules/WeatherIcon";
 import { useLocation } from "react-router-dom";
+import {PrivateRoute} from './route/index'
 // import Subscribe from "./pages/Pages/Utilities/Subscribe";
 // import Contact from "./pages/Pages/Utilities/Contact";
 // import Invoice from "./pages/Pages/Utilities/Invoice";
@@ -35,6 +36,11 @@ import { useLocation } from "react-router-dom";
 // Master Page
 
 import MasterProductsPage from "./pages/Master/Products";
+import AddProducts from "./pages/Master/AddProducts";
+import DeleteProducts from "./pages/Master/DeleteProducts";
+import EditProducts from "./pages/Master/EditProducts"
+
+
 
 import EcommerceDashboard from "./pages/Dashboard/EcommerceDashboard";
 import GeneralDashboard from "./pages/Dashboard/GeneralDashboard";
@@ -143,27 +149,27 @@ function App() {
   let locationParent = locationSplit[1];
   let WithoutRouter = ["auth", "error", "utilities"];
 
-  // const RenderDataFullScreen = () => {
-  //   if (location === "/auth/forget-password") {
-  //     return <ForgotPassword />;
-  //   } else if (location === "/auth/register") {
-  //     return <Register />;
-  //   } else if (location === "/auth/reset-password") {
-  //     return <ResetPassword />;
-  //   } else if (location === "/error/503") {
-  //     return <Error503 />;
-  //   } else if (location === "/error/403") {
-  //     return <Error403 />;
-  //   } else if (location === "/error/404") {
-  //     return <Error404 />;
-  //   } else if (location === "/error/500") {
-  //     return <Error500 />;
-  //   } else if (location === "/utilities/subscribe") {
-  //     return <Subscribe />;
-  //   } else if (location === "/utilities/contact") {
-  //     return <Contact />;
-  //   }
-  // };
+  const RenderDataFullScreen = () => {
+    if (location === "/auth/forget-password") {
+      return <ForgotPassword />;
+    } else if (location === "/auth/register") {
+      return <Register />;
+    } else if (location === "/auth/reset-password") {
+      return <ResetPassword />;
+    } else if (location === "/error/503") {
+      return <Error503 />;
+    } else if (location === "/error/403") {
+      return <Error403 />;
+    } else if (location === "/error/404") {
+      return <Error404 />;
+    } else if (location === "/error/500") {
+      return <Error500 />;
+    } else if (location === "/utilities/subscribe") {
+      return <Subscribe />;
+    } else if (location === "/utilities/contact") {
+      return <Contact />;
+    }
+  };
 
   return (
     <div className="App">
@@ -186,11 +192,30 @@ function App() {
             path="/layout/transparent-sidebar"
             component={TransparentSidebar}
           />
+
+
           <Route
-            path="/products"
+            path="/products/"
             component={MasterProductsPage}
+            exact
           />
-          <Route path="/bootstrap/alert" component={BootstrapAlert} />
+            
+          <Route 
+            path="/products/add"
+            component={AddProducts} 
+          />
+
+          <Route
+            path="/products/delete/:id"
+            component={DeleteProducts} 
+          />
+
+          <Route
+            path="/products/:id"
+            component={EditProducts} 
+          />
+
+          {/* <Route path="/bootstrap/alert" component={BootstrapAlert} />
           <Route path="/bootstrap/badge" component={BootstrapBadge} />
           <Route path="/bootstrap/breadcrumb" component={BootstrapBreadcrumb} />
           <Route path="/bootstrap/button" component={BootstrapButtons} />
@@ -210,8 +235,8 @@ function App() {
           <Route path="/bootstrap/pagination" component={BootstrapPagination} />
           <Route path="/bootstrap/popover" component={BootstrapPopover} />
           <Route path="/bootstrap/Progress" component={BootstrapProgress} />
-          <Route path="/bootstrap/table" component={BootstrapTable} />
-          <Route path="/bootstrap/tooltip" component={BootstrapTooltip} />
+          <Route path="/bootstrap/table" component={BootstrapTable} /> */}
+          {/* <Route path="/bootstrap/tooltip" component={BootstrapTooltip} />
           <Route path="/bootstrap/typography" component={BootstrapTypography} />
           <Route path="/component/article" component={CompArticle} />
           <Route path="/component/avatar" component={CompAvatar} />
@@ -266,16 +291,17 @@ function App() {
           <Route path="/feature/setting-detail" component={SettingDetail} />
           <Route path="/feature/tickets" component={Tickets} />
           <Route path="/credit" component={Credit} />
-          <Route path="/utilitie/Invoice" component={Invoice} />
+          <Route path="/utilitie/Invoice" component={Invoice} /> */}
           <Route path="/auth/login" component={Login} />
-          <Route path="/auth/forget-password" component={ForgotPassword} />
+          <Route path="/auth/register" component={Register} />
+          {/* <Route path="/auth/forget-password" component={ForgotPassword} />
           <Route path="/auth/reset-password" component={ResetPassword} />
           <Route path="/error/503" component={Error503} />
           <Route path="/error/404" component={Error404} />
           <Route path="/error/403" component={Error403} />
           <Route path="/error/503" component={Error500} />
           <Route path="/utilities/subscribe" component={Subscribe} />
-          <Route path="/utilities/contact" component={Contact} />
+          <Route path="/utilities/contact" component={Contact} /> */}
         </Switch>
         </React.Suspense>
         <Footer />

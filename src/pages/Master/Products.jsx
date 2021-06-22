@@ -1,254 +1,238 @@
 import React from "react";
+import client from "../../service/axios";
+import { useEffect, useState } from "react";
+import { useHistory, Link } from "react-router-dom";
+import NoData from "../Components/NoData";
+import Pagination from "../Components/Pagination";
 
-export default function DefaultLayoutPage() {
+const MasterProduct = (props) => {
+  const history = useHistory();
+  let [products, setProducts] = useState([]);
+  const imageUri = "http://localhost:5000/";
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [pagecount, setPageCount] = useState(0);
+  const [search, setSearch] = useState("");
+  const [orderby, setOrderBy] = useState("createdAt");
+  const [orderdir, setOrderDir] = useState("desc");
+
+  const sorting = (sortby) => {
+    let sortdir = orderdir === "desc" ? "asc" : "desc";
+
+    setOrderBy((prevState) => sortby);
+    setOrderDir((prevState) => sortdir);
+  };
+
+  const getList = () => {
+    client
+      .get("/api/v1/products", {
+        params: {
+          page,
+          limit,
+          search,
+          orderby,
+          orderdir,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setProducts((prevState) => res.data.products);
+        setPageCount((prevState) => res.data.pageCount);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    const getList = () => {
+      client
+        .get("/api/v1/products", {
+          params: {
+            page,
+            limit,
+            search,
+            orderby,
+            orderdir,
+          },
+        })
+        .then((res) => {
+          setProducts((prevState) => res.data.products);
+          setPageCount((prevState) => res.data.pageCount);
+        })
+        .catch((err) => {});
+    };
+
+    getList();
+  }, [limit, orderby, orderdir, page, search]);
+
+  const searchHandler = (e) => {
+    const { value } = e.target;
+    setSearch((prevState) => value);
+
+    if (e.keyCode === 13) {
+      doSearch();
+    }
+  };
+
+  const doSearch = () => {
+    getList();
+  };
+
   return (
-    <div class="main-content">
-      <section class="section">
-        <div class="section-header">
+    <div className="main-content">
+      <section className="section">
+        <div className="section-header">
           <h1>Products</h1>
-          <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active">
+          <div className="section-header-breadcrumb">
+            <div className="breadcrumb-item active">
               <a href="#">Dashboard</a>
             </div>
-            <div class="breadcrumb-item">
-              <a href="#">Layout</a>
+            <div className="breadcrumb-item">
+              <a href="#">Products</a>
             </div>
-            <div class="breadcrumb-item">Default Layout</div>
           </div>
         </div>
 
-        <div class="section-body">
-          <h2 class="section-title">This is Example Page</h2>
-          <p class="section-lead">
-            This page is just an example for you to create your own page.
-          </p>
-          <div class="card">
-            {/* <div class="card-header">
-              <h4>Example Card</h4>
-            </div> */}
-            <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Basic DataTables</h4>
+        <div className="section-body">
+          <div className="card">
+            <div className="card-body">
+              <div className="row mb-4">
+                <div className="col-12">
+                  <div className="float-left">
+                    <Link
+                      to="/products/add"
+                      className="btn btn-icon btn-success"
+                    >
+                      <i className="fa fa-plus"></i>
+                      Tambah
+                    </Link>
                   </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-striped" id="table-1">
-                        <thead>
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th>Nama Product</th>
-                            <th>Category</th>
-                            <th>Gambar</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Create a mobile app</td>
-                            <td class="align-middle">
-                              <div
-                                class="progress"
-                                data-height="4"
-                                data-toggle="tooltip"
-                                title="100%"
-                              >
-                                <div
-                                  class="progress-bar bg-success"
-                                  data-width="100%"
-                                ></div>
-                              </div>
-                            </td>
-                            <td>
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-5.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Wildan Ahdian"
-                              />
-                            </td>
-                            <td>2018-01-20</td>
-                            <td>
-                              <div class="badge badge-success">Completed</div>
-                            </td>
-                            <td>
-                              <a href="#" class="btn btn-secondary">
-                                Detail
-                              </a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Redesign homepage</td>
-                            <td class="align-middle">
-                              <div
-                                class="progress"
-                                data-height="4"
-                                data-toggle="tooltip"
-                                title="0%"
-                              >
-                                <div class="progress-bar" data-width="0"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-1.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Nur Alpiana"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-3.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Hariono Yusup"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-4.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Bagus Dwi Cahya"
-                              />
-                            </td>
-                            <td>2018-04-10</td>
-                            <td>
-                              <div class="badge badge-info">Todo</div>
-                            </td>
-                            <td>
-                              <a href="#" class="btn btn-secondary">
-                                Detail
-                              </a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>Backup database</td>
-                            <td class="align-middle">
-                              <div
-                                class="progress"
-                                data-height="4"
-                                data-toggle="tooltip"
-                                title="70%"
-                              >
-                                <div
-                                  class="progress-bar bg-warning"
-                                  data-width="70%"
-                                ></div>
-                              </div>
-                            </td>
-                            <td>
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-1.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Rizal Fakhri"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-2.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Hasan Basri"
-                              />
-                            </td>
-                            <td>2018-01-29</td>
-                            <td>
-                              <div class="badge badge-warning">In Progress</div>
-                            </td>
-                            <td>
-                              <a href="#" class="btn btn-secondary">
-                                Detail
-                              </a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>Input data</td>
-                            <td class="align-middle">
-                              <div
-                                class="progress"
-                                data-height="4"
-                                data-toggle="tooltip"
-                                title="100%"
-                              >
-                                <div
-                                  class="progress-bar bg-success"
-                                  data-width="100%"
-                                ></div>
-                              </div>
-                            </td>
-                            <td>
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-2.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Rizal Fakhri"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-5.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Isnap Kiswandi"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-4.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Yudi Nawawi"
-                              />
-                              <img
-                                alt="image"
-                                src="../assets/img/avatar/avatar-1.png"
-                                class="rounded-circle"
-                                width="35"
-                                data-toggle="tooltip"
-                                title="Khaerul Anwar"
-                              />
-                            </td>
-                            <td>2018-01-16</td>
-                            <td>
-                              <div class="badge badge-success">Completed</div>
-                            </td>
-                            <td>
-                              <a href="#" class="btn btn-secondary">
-                                Detail
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div className="float-right">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        id="searchText"
+                        className="form-control shadow-none"
+                        placeholder="Search here..."
+                        onChange={(e) => searchHandler(e)}
+                      />
+                      <span className="input-group-append">
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => doSearch()}
+                        >
+                          <i className="fas fa-search"></i>
+                        </button>
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {!products.length ? (
+                <NoData />
+              ) : (
+                <div className="table-responsive">
+                  <table className="table table-striped" id="table-1">
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th
+                          className="sortable"
+                          onClick={() => sorting("nama_produk")}
+                        >
+                          Nama
+                        </th>
+                        <th
+                          className="sortable"
+                          onClick={() => sorting("rating")}
+                        >
+                          Rating
+                        </th>
+                        <th
+                          className="sortable"
+                          onClick={() => sorting("price")}
+                        >
+                          Price
+                        </th>
+                        <th
+                          className="sortable"
+                          onClick={() => sorting("stock")}
+                        >
+                          Stock
+                        </th>
+                        <th style={{ width: "12%", textAlign: "center" }}>
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.map((item, index) => {
+                        console.log(item);
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <img
+                                src={`${imageUri}${
+                                  item.image
+                                    ? item.image
+                                    : "uploads/no-image.png"
+                                }`}
+                                alt=""
+                                style={{ width: 40 }}
+                                className="img-fluid rounded"
+                              />
+                            </td>
+                            <td>{item.nama_produk}</td>
+                            <td>{item.rating}</td>
+                            <td>
+                              Rp.{" "}
+                              {new Number(item.price).toLocaleString("id-ID")}
+                            </td>
+                            <td>{item.stock}</td>
+                            <td>
+                              <div className="row">
+                                <div className="col-6">
+                                  <Link
+                                    to={`/products/${item.id}`}
+                                    className="btn btn-icon btn-warning"
+                                  >
+                                    <i className="far fa-edit"></i>
+                                  </Link>
+                                </div>
+                                <div className="col-6">
+                                  <Link
+                                    to={`/products/delete/${item.id}`}
+                                    className="btn btn-icon btn-danger"
+                                  >
+                                    <i className="fas fa-trash"></i>
+                                  </Link>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
+            <div className="card-footer bg-whitesmoke">
+              <div className="d-flex flex-row justify-content-between">
+                <div>
+                  <Pagination
+                    page={page}
+                    pagecount={pagecount}
+                    setPage={setPage}
+                  />
+                </div>
+              </div>
             </div>
-            <div class="card-footer bg-whitesmoke">This is card footer</div>
           </div>
         </div>
       </section>
     </div>
   );
-}
+};
+
+export default MasterProduct;
